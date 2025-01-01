@@ -3,8 +3,8 @@ En el presente repositorio se describe el proceso de tratamiento de datos obteni
 # Diseño de Filtros
 Una vez tenemos los datos del recorrido, diseñamos un filtro para reducir el ruido de las aceleraciones, para ello primero graficamos el espectro de frecuencias e identificamos la frecuencia en la que se ecuentra la mayor parte de la señal.
 
-''matlab
+```matlab
 FrecAccsF = abs(fft(accO));
 FrecGyrsF = abs(fft(gyrsF));
 frec = Fs/L(1)*(0:L(1)-1);
-''
+```
