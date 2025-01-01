@@ -26,7 +26,7 @@ frec = Fs/L(1)*(0:L(1)-1);
 ```
 
 <p align="center">
-   <img src="../Imágenes/Esp_f.png" alt="Texto alternativo" width="1000"><br> 
+   <img src="/Imágenes/Esp_f.png" alt="Texto alternativo" width="1000"><br> 
 
 ```matlab
 DeltaT = 1;
