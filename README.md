@@ -63,6 +63,8 @@ gyr = filter(filtro,1,gyrsF);
 
 ## Eliminación del efecto de la gravedad
 
+Como se empleó una IMU para adquirir los datos del recorrido en karts, esta también considera las aceleraciones de la gravedad sobre el dispositivo movil, por lo cual se debe eliminar dicho efecto sobre el vector total de aceleracione, para ello se asume que el vector de aceleración después del filtro es una combinación líneal de la aceleración deseada con un vector totalmente vertical de magnitud igual a 9.8 $m/s^2$ que representa la gravedad, en este sentido la relación entre ambos vectores puede ser descrita por el coseno de ambas magnitudes.
+
 ```matlab
 accTot = sqrt(acc(:,1).^2+acc(:,2).^2+acc(:,3).^2);
 cosGrav = 9.81/accTot;
