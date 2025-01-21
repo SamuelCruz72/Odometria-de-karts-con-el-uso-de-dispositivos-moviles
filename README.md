@@ -1,5 +1,5 @@
 # Odometria de karts con el uso de dispositivos moviles
-En el presente repositorio se describe el proceso de tratamiento de datos obtenidos de un recorrido en karts mediante el uso de sensores integrados en dispositivos móviles, con el fin de reconstruir la trayectoria seguida durante el recorrido.
+En el presente repositorio se describe el proceso de tratamiento de datos obtenidos de un recorrido en karts a la plazoleta del edificio CyT en la Universidad Nacional de Colombia, mediante el uso de sensores integrados en dispositivos móviles, con el fin de reconstruir la trayectoria seguida durante el recorrido.
 ## Obtención de datos
 ```matlab
 jsonStr = fileread('Datos_Carlos.json');
@@ -17,7 +17,7 @@ t = (0:L(1)-1)*Ts;
 ```
 
 ## Diseño del filtro
-Una vez tenemos los datos del recorrido, diseñamos un filtro para reducir el ruido de las aceleraciones, para ello primero graficamos el espectro de frecuencias e identificamos la frecuencia en la que se concentra la mayor parte de la potencia de la señal.
+Una vez tenemos los datos del recorrido, diseñamos un filtro para reducir el ruido de las aceleraciones y del giróscopo, para ello primero graficamos el espectro de frecuencias e identificamos la frecuencia en la que se concentra la mayor parte de la potencia de la señal.
 
 ```matlab
 FrecAccsF = abs(fft(accO));
@@ -32,7 +32,10 @@ Como se puede ver en la gráfica, la mayor parte de la potencia de la señal se 
 
 Los parámetros necesarios para caracterizar dicho filtro son: 
 
-+ Banda de Transición ($\Delta \omega$): Representa el intervalo de frecuencias permisibles para que el filtro tenga el efecto deseado en la señal.
++ Banda de Transición ($\Delta \omega$): Representa el intervalo de frecuencias permisibles para que el filtro tenga el efecto deseado en la señal. Es importante aclarar que por el teorema de muestreo de Nyquist cada período se toman dos muestras, por lo cual las frecuencias se deben normalizar usando la siguiente relación:
+
+$$f_N = \frac{f}{2f_s}$$
+
 + Tolerancia de paso ($\Delta_1$): Representa la magnitud mínima que el filtro le permite reducir a la señal dentro de los límites de la banda de paso. También suele representarse en decibeles mediante la siguiente relación:
 
 $$R_p = 20log_{10}(\frac{1}{1-\Delta_1})$$
