@@ -17,7 +17,7 @@ t = (0:L(1)-1)*Ts;
 ```
 
 ## Diseño del filtro
-Una vez tenemos los datos del recorrido, diseñamos un filtro para reducir el ruido de las aceleraciones, para ello primero graficamos el espectro de frecuencias e identificamos la frecuencia en la que se ecuentra la mayor parte de la señal.
+Una vez tenemos los datos del recorrido, diseñamos un filtro para reducir el ruido de las aceleraciones, para ello primero graficamos el espectro de frecuencias e identificamos la frecuencia en la que se concentra la mayor parte de la potencia de la señal.
 
 ```matlab
 FrecAccsF = abs(fft(accO));
@@ -27,6 +27,25 @@ frec = Fs/L(1)*(0:L(1)-1);
 
 <p align="center">
    <img src="/Imágenes/Esp_f.png" alt="Espectro de Frecuencias" width="500"><br> 
+
+Como se puede ver en la gráfica, la mayor parte de la potencia de la señal se encuentra por debajo de los 10 Hz, mientras que las componentes de frecuencias superiores contribuyen al ruido en la señal. Por lo cual se debe implementar un filtro pasabajos con frecuencia de corte en 10 Hz para reducir el ruido presente en la señal.
+
+Los parámetros necesarios para caracterizar dicho filtro son: 
+
++ Banda de Transición ($\Delta \omega$): Representa el intervalo de frecuencias permisibles para que el filtro tenga el efecto deseado en la señal.
++ Tolerancia de paso ($\Delta_1$): Representa la magnitud mínima que el filtro le permite reducir a la señal dentro de los límites de la banda de paso. También suele representarse en decibeles mediante la siguiente relación:
+
+$$R_p = 20log_{10}(\frac{1}{1-\Delta_1})$$
+
++ Tolerancia de rechazo ($\Delta_2$): Representa la magnitud de corte máxima que el filtro debe aplicar a la señal, una vez se sobrepase el límite superior de la banda de transición. Al igual que en la tolerancia de paso, suele representarse en decibeles con la siguiente relación:
+
+$$A_s = 20log_{10}(\frac{1}{\Delta_2})$$
+
++ Orden del filtro (N): Es un número entero que determina la cantidad de muestras y retardos que emplea el filtro para procesar la señal, entre mayor sea el orden se satisfacen parámetros más estrictos pero se eleva considerablemente el costo computacional, se puede lograr una aproximación del orden que cumpla medianamente bien con los requerimientos en los demás parámetros mediante la siguiente ecuación:
+
+$$N \approx \frac{f_sA_s}{22\Delta f}$$
+
+Teniendo en cuenta los parámetros anteriores, se propone un filtro FIR pasabajos en Matlab con frecuencia normalizada de corte en Hz y ventana de Chebysev de orden n y tolerancia de rechazo $A_s$
 
 ```matlab
 DeltaT = 1;
