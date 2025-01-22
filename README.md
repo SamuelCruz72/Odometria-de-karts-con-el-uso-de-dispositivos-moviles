@@ -1,4 +1,4 @@
-# Odometria de karts con el uso de dispositivos moviles
+# Odometría de karts con el uso de dispositivos móviles
 En el presente repositorio se describe el proceso de tratamiento de datos obtenidos de un recorrido en karts a la plazoleta del edificio CyT en la Universidad Nacional de Colombia, mediante el uso de sensores integrados en dispositivos móviles, con el fin de reconstruir la trayectoria seguida durante el recorrido.
 ## Obtención de datos
 ```matlab
@@ -91,11 +91,11 @@ for j=1:L(2)
 end
 ```
 
-Al igual que en el anterior caso, la velocidad y la aceleración del kart se relacionan mediante una ecuación diferencial dependiente del tiempo:
+Al igual que en el anterior caso, la velocidad y la aceleración del kart en coordenadas cartesianas se relacionan mediante una ecuación diferencial dependiente del tiempo:
 
 $$\frac{d\vec{v}(t)}{dt}=\vec{a}(t)$$
 
-Para resolver esta ecuación tammbién empleamos el método de Euler teniendo en cuenta las consideraciones del paso y condiciones iniciales iguales a cero:
+Para resolver esta ecuación también empleamos el método de Euler teniendo en cuenta las consideraciones del paso y condiciones iniciales iguales a cero:
 
 $$\vec{v}_{k+1}=\vec{v}_k+T_s\vec{a}_k$$
 
@@ -110,7 +110,13 @@ end
 
 ## Obtención de la trayectoria
 
+Finalmente, para obtener la trayectoría del kart en coordenadas cartesianas se emplea el vector de velocidades obtenido en el paso anterior, teniendo en cuenta que su ecuación diferencial es:
 
+$$\frac{d\vec{r}(t)}{dt}=\vec{v}(t)$$
+
+Entonces su solución por método de Euler con paso definido y condiciones iniciales iguales a cero estaría dada por:
+
+$$\vec{r}_{k+1}=\vec{r}_k+T_s\vec{v}_k$$
 
 ```matlab
 for j=1:L(2)
