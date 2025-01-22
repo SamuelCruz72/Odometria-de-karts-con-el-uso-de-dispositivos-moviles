@@ -1,11 +1,18 @@
 # Odometría de karts con el uso de dispositivos móviles
 En el presente repositorio se describe el proceso de tratamiento de datos obtenidos de un recorrido en karts a la plazoleta del edificio CyT en la Universidad Nacional de Colombia, mediante el uso de sensores integrados en dispositivos móviles, con el fin de reconstruir la trayectoria seguida durante el recorrido.
+
 ## Obtención de datos
+Para obtener los datos se usa una plataforma denominada Edge Impulse a la cual se conecta el dispositivo móvil con el cual se va tomar la medición; una vez conectado, se fija el tiempo de muestreo y se selecciona el tiempo de medición tal y como se indica en la siguiente imagen:
+
+Una vez se tienen los datos, se descargan en formato JSON y se cargan al programa Matlab para analizarlos; para poder leer los datos en formato numérico se emplea el siguiente código, donde el parámetro de la función ```fileread()``` es el nombre del archivo que contenga los datos JSON:
+
 ```matlab
 jsonStr = fileread('Datos_Carlos.json');
 DatosJson = jsondecode(jsonStr);
 Valores = DatosJson.payload.values;
 ```
+
+El paso siguiente es definir parámetros generales de los datos obtendos tales como la frecuencia de muestreo y el vector de tiempo, a su vez se definen los vectores de aceleración y velocidad angular obtenidos a partir de la llave de valores legibles del archivo JSON:
 
 ```matlab
 Fs = 62.5;
@@ -62,7 +69,6 @@ gyr = filter(filtro,1,gyrsF);
 ```
 
 ## Eliminación del efecto de la gravedad
-
 Como se empleó una IMU para adquirir los datos del recorrido en karts, esta también considera las aceleraciones de la gravedad sobre el dispositivo movil, por lo cual se debe eliminar dicho efecto sobre el vector total de aceleraciones, para ello se asume que el vector de aceleración después del filtro es una combinación líneal de la aceleración deseada con un vector totalmente vertical de magnitud igual a 9.8 $m/s^2$ que representa la gravedad, en este sentido la relación entre ambos vectores puede ser descrita por el coseno de ambas magnitudes.
 
 Ahora bien, dada la suposición de que la aceleración medida por la IMU es una combinación lineal del vector de aceleración desdeado y el vector de gravedad, se puede establecer una relación entre las magnitudes de los tres vectores, empleando la ley del coseno:
@@ -81,7 +87,6 @@ accsG = sqrt(abs(accTot.^2-9.81^2)).*[cosD(:,1) cosD(:,2) cosD(:,3)];
 ```
 
 ## Obtención de la velocidad y posición angular
-
 Una vez tenemos filtrados los datos del vector de velocidad angular dado por las mediciones del giróscopo, se obtiene el vector de posición angular teniendo en cuenta que ambas magnitudes se relacionan mediante la siguiente ecuación diferencial:
 
 $$\frac{d\vec{\theta}(t)}{dt}=\vec{\omega}(t)$$
@@ -117,7 +122,6 @@ end
 ```
 
 ## Obtención de la trayectoria
-
 Finalmente, para obtener la trayectoría del kart en coordenadas cartesianas se emplea el vector de velocidades obtenido en el paso anterior, teniendo en cuenta que su ecuación diferencial es:
 
 $$\frac{d\vec{r}(t)}{dt}=\vec{v}(t)$$
