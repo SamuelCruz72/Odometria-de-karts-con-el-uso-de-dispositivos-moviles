@@ -4,6 +4,9 @@ En el presente repositorio se describe el proceso de tratamiento de datos obteni
 ## Obtención de datos
 Para obtener los datos se usa una plataforma denominada Edge Impulse a la cual se conecta el dispositivo móvil con el cual se va tomar la medición; una vez conectado, se fija el tiempo de muestreo y se selecciona el tiempo de medición tal y como se indica en la siguiente imagen:
 
+<p align="center">
+   <img src="/Imágenes/Edge Impulse.png" alt="Edge impulse" width="500"><br> 
+
 Una vez se tienen los datos, se descargan en formato JSON y se cargan al programa Matlab para analizarlos; para poder leer los datos en formato numérico se emplea el siguiente código, donde el parámetro de la función ```fileread()``` es el nombre del archivo que contenga los datos JSON:
 
 ```matlab
@@ -33,9 +36,12 @@ frec = Fs/L(1)*(0:L(1)-1);
 ```
 
 <p align="center">
-   <img src="/Imágenes/Esp_f.png" alt="Espectro de Frecuencias" width="500"><br> 
+   <img src="/Imágenes/Esp_f.png" alt="Espectro de Frecuencias Aceleracion" width="500"><br> 
 
-Como se puede ver en la gráfica, la mayor parte de la potencia de la señal se encuentra por debajo de los 10 Hz, mientras que las componentes de frecuencias superiores contribuyen al ruido en la señal. Por lo cual se debe implementar un filtro pasabajos con frecuencia de corte en 10 Hz para reducir el ruido presente en la señal.
+<p align="center">
+   <img src="/Imágenes/Esp_g.png" alt="Espectro de Frecuencias Velocidad Angular" width="500"><br> 
+
+Como se puede ver en las gráficas, la mayor parte de la potencia de la señal se encuentra por debajo de los 10 Hz, mientras que las componentes de frecuencias superiores contribuyen al ruido en la señal. Por lo cual se debe implementar un filtro pasabajos con frecuencia de corte en 10 Hz para reducir el ruido presente en la señal.
 
 Los parámetros necesarios para caracterizar dicho filtro son: 
 
@@ -67,6 +73,14 @@ filtro = fir1(n,f,"low",chebwin(n+1,As));
 acc = filter(filtro,1,accO);
 gyr = filter(filtro,1,gyrsF);
 ```
+
+Con lo cual, los resultados de la aplicación del filtro en los vectores de aceleración y velocidad angular son:
+
+<p align="center">
+   <img src="/Imágenes/Facc.png" alt="Aceleracion Filtrada" width="500"><br> 
+
+<p align="center">
+   <img src="/Imágenes/Fgyr.png" alt="Velocidad Angular Filtrada" width="500"><br> 
 
 ## Eliminación del efecto de la gravedad
 Como se empleó una IMU para adquirir los datos del recorrido en karts, esta también considera las aceleraciones de la gravedad sobre el dispositivo movil, por lo cual se debe eliminar dicho efecto sobre el vector total de aceleraciones, para ello se asume que el vector de aceleración después del filtro es una combinación líneal de la aceleración deseada con un vector totalmente vertical de magnitud igual a 9.8 $m/s^2$ que representa la gravedad, en este sentido la relación entre ambos vectores puede ser descrita por el coseno de ambas magnitudes.
