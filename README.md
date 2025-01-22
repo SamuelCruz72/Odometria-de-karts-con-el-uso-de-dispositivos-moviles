@@ -74,6 +74,14 @@ accsG = sqrt(abs(accTot.^2-9.81^2)).*[cosD(:,1) cosD(:,2) cosD(:,3)];
 
 ## Obtención de la velocidad y posición angular
 
+Una vez tenemos filtrados los datos del vector de velocidad angular dado por las mediciones del giróscopo, se obtiene el vector de posición angular teniendo en cuenta que ambas magnitudes se relacionan mediante la siguiente ecuación diferencial:
+
+$$\frac{d\vec{\theta}(t)}{dt}=\vec{\omega}(t)$$
+
+Para resolver esta ecuación empleamos el método de Euler teniendo en cuenta que el paso h viene dado por el tiempo de muestreo de nuestro dispositivo móvil y la posición angular inicial del kart es 0 rad/s:
+
+$$\vec{\theta}_{k+1}=\vec{\theta}_k+T_s\vec{\omega}_k$$
+
 ```matlab
 for j=1:L(2)
     Ang(1,j) = 0;
@@ -82,6 +90,14 @@ for j=1:L(2)
     end
 end
 ```
+
+Al igual que en el anterior caso, la velocidad y la aceleración del kart se relacionan mediante una ecuación diferencial dependiente del tiempo:
+
+$$\frac{d\vec{v}(t)}{dt}=\vec{a}(t)$$
+
+Para resolver esta ecuación tammbién empleamos el método de Euler teniendo en cuenta las consideraciones del paso y condiciones iniciales iguales a cero:
+
+$$\vec{v}_{k+1}=\vec{v}_k+T_s\vec{a}_k$$
 
 ```matlab
 for j=1:L(2)
@@ -93,6 +109,8 @@ end
 ```
 
 ## Obtención de la trayectoria
+
+
 
 ```matlab
 for j=1:L(2)
