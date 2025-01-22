@@ -63,7 +63,15 @@ gyr = filter(filtro,1,gyrsF);
 
 ## Eliminación del efecto de la gravedad
 
-Como se empleó una IMU para adquirir los datos del recorrido en karts, esta también considera las aceleraciones de la gravedad sobre el dispositivo movil, por lo cual se debe eliminar dicho efecto sobre el vector total de aceleracione, para ello se asume que el vector de aceleración después del filtro es una combinación líneal de la aceleración deseada con un vector totalmente vertical de magnitud igual a 9.8 $m/s^2$ que representa la gravedad, en este sentido la relación entre ambos vectores puede ser descrita por el coseno de ambas magnitudes.
+Como se empleó una IMU para adquirir los datos del recorrido en karts, esta también considera las aceleraciones de la gravedad sobre el dispositivo movil, por lo cual se debe eliminar dicho efecto sobre el vector total de aceleraciones, para ello se asume que el vector de aceleración después del filtro es una combinación líneal de la aceleración deseada con un vector totalmente vertical de magnitud igual a 9.8 $m/s^2$ que representa la gravedad, en este sentido la relación entre ambos vectores puede ser descrita por el coseno de ambas magnitudes.
+
+Ahora bien, dada la suposición de que la aceleración medida por la IMU es una combinación lineal del vector de aceleración desdeado y el vector de gravedad, se puede establecer una relación entre las magnitudes de los tres vectores, empleando la ley del coseno:
+
+$$a_d =\sqrt{a_m^2+g^2-2a_mgcos(\gamma)}$$
+
+Una vez conocida la magnitud de la aceleración deseada, usando la ley de senos se puede conocer su dirección relativa a la aceleración medida y con el uso de los cosenos directres de esta se determina su dirección absoluta:
+
+$$sen(\alpha) = \frac{gsen(\gamma)}{a_d}$$
 
 ```matlab
 accTot = sqrt(acc(:,1).^2+acc(:,2).^2+acc(:,3).^2);
