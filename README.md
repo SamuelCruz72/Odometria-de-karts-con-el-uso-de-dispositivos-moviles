@@ -136,6 +136,14 @@ for j=1:L(2)
 end
 ```
 
+Con lo cual las velocidades obtenidas son:
+
+<p align="center">
+   <img src="/Imágenes/vx.png" alt="Trayectoria" width="500"><br> 
+
+<p align="center">
+   <img src="/Imágenes/vy.png" alt="Trayectoria" width="500"><br> 
+
 ## Obtención de la trayectoria
 Finalmente, para obtener la trayectoría del kart en coordenadas cartesianas se emplea el vector de velocidades obtenido en el paso anterior, teniendo en cuenta que su ecuación diferencial es:
 
@@ -153,3 +161,7 @@ for j=1:L(2)
     end
 end
 ```
+Con lo cual la trayectoria final obtenida es:
+
+<p align="center">
+   <img src="/Imágenes/Trayectoria.png" alt="Trayectoria" width="500"><br> 
