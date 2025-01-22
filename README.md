@@ -96,8 +96,9 @@ $$sen(\alpha) = \frac{gsen(\gamma)}{a_d}$$
 ```matlab
 accTot = sqrt(acc(:,1).^2+acc(:,2).^2+acc(:,3).^2);
 cosGrav = 9.81/accTot;
+MagaccsgG  = sqrt(abs(accTot.^2+9.81^2-2.*cosGrav.*accTot.*9.81));
 cosD = [acc(:,1)./accTot acc(:,2)./accTot acc(:,3)./accTot];
-accsG = sqrt(abs(accTot.^2-9.81^2)).*[cosD(:,1) cosD(:,2) cosD(:,3)];
+accsG = MagaccsgG*cosD;
 ```
 
 ## Obtención de la velocidad y posición angular
