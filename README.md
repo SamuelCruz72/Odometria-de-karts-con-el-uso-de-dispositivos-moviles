@@ -139,10 +139,7 @@ end
 Con lo cual las velocidades obtenidas son:
 
 <p align="center">
-   <img src="/Imágenes/vx.png" alt="Trayectoria" width="500"><br> 
-
-<p align="center">
-   <img src="/Imágenes/vy.png" alt="Trayectoria" width="500"><br> 
+   <img src="/Imágenes/velocity.png" alt="Velocidad" width="500"><br> 
 
 ## Obtención de la trayectoria
 Finalmente, para obtener la trayectoría del kart en coordenadas cartesianas se emplea el vector de velocidades obtenido en el paso anterior, teniendo en cuenta que su ecuación diferencial es:
