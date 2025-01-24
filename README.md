@@ -61,7 +61,12 @@ $$A_s = 20log_{10}(\frac{1}{\Delta_2})$$
 
 $$N \approx \frac{f_sA_s}{22\Delta f}$$
 
-Teniendo en cuenta los parámetros anteriores, se propone un filtro FIR pasabajos en Matlab con frecuencia normalizada de corte en Hz y ventana de Chebysev de orden n y tolerancia de rechazo $A_s$
+Ahora bien, para el filtro deseado la banda de transición se establece en 1 Hz para que no sea tan exigente para la ventana de diseño que se use, la tolerancia de paso se establece en 0.01 dado que no queremos perder más del 1% de la potencia de la señal deseada y la tolerancia de rechazo se establece en 0.1, con lo cual la señal perderá un 90 % de su potencia tras atravesar la banda de transición, con lo cual el dagrama del filtro quedaría de la siguiente manera:
+
+<p align="center">
+   <img src="Imágenes/Filtro.png" alt="Filtro" width="500"><br> 
+
+Teniendo en cuenta los parámetros anteriores, el filtro que mejor se adapta a las condiciones establecidas y no consume tantos recursos computacionales es un filtro FIR pasabajos con frecuencia normalizada de corte en 0.08 Hz y ventana de Chebysev de orden 57 y tolerancia de rechazo de 20 dB. Entonces su implementación en Matlab viene dada por:
 
 ```matlab
 DeltaT = 1;
@@ -73,6 +78,8 @@ filtro = fir1(n,f,"low",chebwin(n+1,As));
 acc = filter(filtro,1,accO);
 gyr = filter(filtro,1,gyrsF);
 ```
+<p align="center">
+   <img src="Imágenes/Bode_filtro.png" alt="Bode Filtro Pasa Bajos" width="500"><br> 
 
 Con lo cual, los resultados de la aplicación del filtro en los vectores de aceleración y velocidad angular son:
 
@@ -83,15 +90,18 @@ Con lo cual, los resultados de la aplicación del filtro en los vectores de acel
    <img src="/Imágenes/Fgyr.png" alt="Velocidad Angular Filtrada" width="500"><br> 
 
 ## Eliminación del efecto de la gravedad
-Como se empleó una IMU para adquirir los datos del recorrido en karts, esta también considera las aceleraciones de la gravedad sobre el dispositivo movil, por lo cual se debe eliminar dicho efecto sobre el vector total de aceleraciones, para ello se asume que el vector de aceleración después del filtro es una combinación líneal de la aceleración deseada con un vector totalmente vertical de magnitud igual a 9.8 $m/s^2$ que representa la gravedad, en este sentido la relación entre ambos vectores puede ser descrita por el coseno de ambas magnitudes.
+Como se empleó una IMU para adquirir los datos del recorrido en karts, esta también considera las aceleraciones de la gravedad sobre el dispositivo movil, por lo cual se debe eliminar dicho efecto sobre el vector total de aceleraciones, para ello se asume que el vector de aceleración después del filtro es una combinación líneal de la aceleración deseada que es ortogonal a un vector totalmente vertical de magnitud igual a 9.8 $m/s^2$ que representa la gravedad. 
 
-Ahora bien, dada la suposición de que la aceleración medida por la IMU es una combinación lineal del vector de aceleración desdeado y el vector de gravedad, se puede establecer una relación entre las magnitudes de los tres vectores, empleando la ley del coseno:
+<p align="center">
+   <img src="Imágenes/DCL celular.png" alt="DCL Movil" width="500"><br> 
 
-$$a_d =\sqrt{a_m^2+g^2-2a_mgcos(\gamma)}$$
+Entonces, la magnitud del vector de aceleración deseado estaría dada por el teorema de Pitágoras y representaría la aceleración tangencial del centro de masa del móvil en el Kart.
 
-Una vez conocida la magnitud de la aceleración deseada, usando la ley de senos se puede conocer su dirección relativa a la aceleración medida y con el uso de los cosenos directres de esta se determina su dirección absoluta:
+$$a_d =\sqrt{a_m^2-g^2}$$
 
-$$sen(\alpha) = \frac{gsen(\gamma)}{a_d}$$
+Una vez conocida la magnitud de la aceleración tangencial, se determina el coseno entre la aceleración tangencial y la aceleración medida, a fin de proyectar las componentes de la aceleración tangencial en el sistema rotado del móvil con el uso de los cosenos directores del vector de acelación medida:
+
+$$\vec{a_{d_r}} = \vec{a_d}sen(\gamma)cos(\theta_m)$$
 
 ```matlab
 accTot = sqrt(acc(:,1).^2+acc(:,2).^2+acc(:,3).^2);
