@@ -35,7 +35,7 @@ Entonces las gráficas de las magnitudes medidas son:
    <img src="Imágenes/amed.png" alt="Aceleración medida" width="500"><br> 
 
 <p align="center">
-   <img src="Imágenes/amed.png" alt="Velocidad angular medida" width="500"><br> 
+   <img src="Imágenes/gyrmed.png" alt="Velocidad angular medida" width="500"><br> 
 
 ## Diseño del filtro
 Una vez tenemos los datos del recorrido, diseñamos un filtro para reducir el ruido de las aceleraciones y del giróscopo, para ello primero graficamos el espectro de frecuencias e identificamos la frecuencia en la que se concentra la mayor parte de la potencia de la señal.
@@ -109,10 +109,10 @@ l = size(accf);
 Con lo cual, los resultados de la aplicación del filtro y la correción del desfase en los vectores de aceleración y velocidad angular son:
 
 <p align="center">
-   <img src="/Imágenes/Facc.png" alt="Aceleracion Filtrada" width="500"><br> 
+   <img src="Imágenes/Facc.png" alt="Aceleracion Filtrada" width="500"><br> 
 
 <p align="center">
-   <img src="/Imágenes/Fgyr.png" alt="Velocidad Angular Filtrada" width="500"><br> 
+   <img src="Imágenes/Fgyr.png" alt="Velocidad Angular Filtrada" width="500"><br> 
 
 ## Eliminación del efecto de la gravedad
 Como se empleó una IMU para adquirir los datos del recorrido en karts, esta también considera las aceleraciones de la gravedad sobre el dispositivo movil, por lo cual se debe eliminar dicho efecto sobre el vector total de aceleraciones, para ello se asume que el vector de aceleración después del filtro es una combinación líneal de la aceleración deseada que es ortogonal a un vector totalmente vertical de magnitud igual a 9.8 $m/s^2$ que representa la gravedad. 
