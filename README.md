@@ -1,11 +1,11 @@
 # Odometría de karts con el uso de dispositivos móviles
-En el presente repositorio se describe el proceso de tratamiento de datos obtenidos de un recorrido en karts a la plazoleta del edificio CyT en la Universidad Nacional de Colombia, mediante el uso de sensores integrados en dispositivos móviles, con el fin de reconstruir la trayectoria seguida durante el recorrido:
+En el presente repositorio se describe el proceso de tratamiento de datos obtenidos de un recorrido en karts a la plazoleta del edificio CyT en la Universidad Nacional de Colombia, mediante el uso de una IMU integrada en dispositivos móviles, con el fin de reconstruir la trayectoria seguida durante el recorrido:
 
 <p align="center">
    <img src="Imágenes/CyT.jpg" alt="Pista CyT" width="500"><br> 
 
 ## Obtención de datos
-Para obtener los datos se usa una plataforma denominada Edge Impulse a la cual se conecta el dispositivo móvil con el cual se va tomar la medición; una vez conectado, se fija el tiempo de muestreo y se selecciona el tiempo de medición tal y como se indica en la siguiente imagen:
+Para obtener los datos se usa una plataforma denominada Edge Impulse a la cual se conecta el dispositivo móvil con el cual se va a tomar la medición; una vez conectado, se fija el tiempo de muestreo y se selecciona el tiempo de medición tal y como se indica en la siguiente imagen:
 
 <p align="center">
    <img src="Imágenes/Edge Impulse.png" alt="Edge impulse" width="500"><br> 
@@ -77,7 +77,7 @@ Para el filtro deseado la banda de transición se establece en 1 Hz, a fin de qu
 <p align="center">
    <img src="Imágenes/Filtro.png" alt="Filtro" width="500"><br> 
 
-Teniendo en cuenta los parámetros anteriores, el filtro que mejor se adapta a las condiciones establecidas y no consume tantos recursos computacionales es un filtro FIR pasabajos con frecuencia normalizada de corte en 0.08 Hz y ventana de Chebysev de orden 57 y tolerancia de rechazo de 20 dB. Entonces su implementación en Matlab viene dada por:
+Teniendo en cuenta los parámetros anteriores, el filtro que mejor se adapta a las condiciones establecidas y no consume tantos recursos computacionales es un filtro FIR pasabajos con frecuencia normalizada de corte en 0.08 Hz y ventana de Chebyshev de orden 57 y tolerancia de rechazo de 20 dB. Entonces su implementación en Matlab viene dada por:
 
 ```matlab
 DeltaT = 1;
@@ -106,7 +106,7 @@ gyrf(1:delay,:) = [];
 l = size(accf);
 ```
 
-Con lo cual, los resultados de la aplicación del filtro y la correción del desfase en los vectores de aceleración y velocidad angular son:
+Con lo cual, los resultados de la aplicación del filtro y la corrección del desfase en los vectores de aceleración y velocidad angular son:
 
 <p align="center">
    <img src="Imágenes/Facc.png" alt="Aceleracion Filtrada" width="500"><br> 
@@ -186,14 +186,15 @@ Con lo cual las velocidades obtenidas son:
 <p align="center">
    <img src="Imágenes/Velocidad.png" alt="Velocidad" width="500"><br> 
 
-## Obtención de la trayectoría
-Para obtener la trayectoría del kart en coordenadas cartesianas se debe tener en cuenta que en cada punto el sistema de referencia rota con respecto al primer punto de medición, un ángulo determinado por el vector de posición angular, por lo cual se debe aplicar una matriz de corrección cuyas componentes se calculan con la primera componente del vector de posición angular, en este caso la del eje x dado que su velocidad es la de menor magnitud, por lo cual su mayor contribución al movimiento del kart es el cambio de dirección:
+## Obtención de la trayectoria
+Para obtener la trayectoria del kart en coordenadas cartesianas se debe tener en cuenta que en cada punto el sistema de referencia rota con respecto al primer punto de medición, un ángulo determinado por el vector de posición angular, por lo cual se debe aplicar una matriz de corrección cuyas componentes se calculan con la primera componente del vector de posición angular, en este caso la del eje x dado que su velocidad es la de menor magnitud, por lo cual su mayor contribución al movimiento del kart es el cambio de dirección:
 
-$$Rot_k = \begin{pmatrix}
+$$Rot_k = \left( 
+\begin{matrix}
 1 & 0 & 0\\
 0 & cos(\theta_{1_k}) & sen(\theta_{1_k})\\
 0 & -sen(\theta_{1_k}) & cos(\theta_{1_k})\\
-\end{pmatrix}$$
+\end{matrix}\right)$$
 
 Una vez se tiene la matriz de corrección de dirección, se necesita complementar con el vector de velocidades obtenido en el paso anterior para determinar el cambio de magnitud en la posición, para ello se emplea la ecuación diferencial que relaciona ambas componentes:
 
@@ -211,7 +212,7 @@ for j=1:L(2)
     end
 end
 ```
-Con lo cual la trayectoria final obtenida es:
+Finalmente, la trayectoria obtenida es:
 
 <p align="center">
    <img src="Imágenes/Trayectoria.png" alt="Trayectoria" width="500"><br> 
