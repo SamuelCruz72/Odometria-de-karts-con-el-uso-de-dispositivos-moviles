@@ -52,7 +52,7 @@ frec = Fs/L(1)*(0:L(1)-1);
 <p align="center">
    <img src="/Imágenes/Esp_g.png" alt="Espectro de Frecuencias Velocidad Angular" width="500"><br> 
 
-Como se puede ver en las gráficas, la mayor parte de la potencia de la señal se concentra por debajo de los 10 Hz, además se comprobó empíricamente que si se eleva la frecuencia de corte las componentes de frecuencias superiores contribuyen al ruido en la señal mientras que si la frecuencia de corte se reduce, la señal pierde mucho potencia y los resultados no son deseados. Por lo cual se debe implementar un filtro pasabajos con frecuencia de corte en 10 Hz para reducir el ruido presente en la señal.
+Como se puede ver en las gráficas, la mayor parte de la potencia de la señal se concentra por debajo de los 10 Hz, además se comprobó empíricamente que si se eleva la frecuencia de corte las componentes de frecuencias superiores contribuyen al ruido en la señal mientras que si la frecuencia de corte se reduce, la señal pierde mucha potencia y los resultados no son deseados. Por lo cual se debe implementar un filtro pasabajos con frecuencia de corte en 10 Hz para reducir el ruido presente en la señal.
 
 Los parámetros necesarios para caracterizar dicho filtro son: 
 
@@ -72,7 +72,7 @@ $$A_s = 20log_{10}(\frac{1}{\Delta_2})$$
 
 $$N \approx \frac{f_sA_s}{22\Delta f}$$
 
-Para el filtro deseado la banda de transición se establece en 1 Hz, a fin de que no sea tan exigente para la ventana de diseño que se use; la tolerancia de paso se establece en 0.01, dado que no queremos perder más del 1% de la potencia de la señal deseada; y la tolerancia de rechazo se establece en 0.1, con lo cual la señal perderá un 90 % de su potencia tras atravesar la banda de transición, con lo cual el diagrama del filtro queda de la siguiente manera:
+Para el filtro deseado la banda de transición se establece en 1 Hz, a fin de que no sea tan exigente para la ventana de diseño que se use; la tolerancia de paso se establece en 0.01, dado que no queremos perder más del 1 % de la potencia de la señal deseada; y la tolerancia de rechazo se establece en 0.1, con lo cual la señal perderá un 90 % de su potencia tras atravesar la banda de transición, con lo cual el diagrama del filtro queda de la siguiente manera:
 
 <p align="center">
    <img src="Imágenes/Filtro.png" alt="Filtro" width="500"><br> 
@@ -92,7 +92,7 @@ gyr = filter(filtro,1,gyrsF);
 <p align="center">
    <img src="Imágenes/Bode_filtro.png" alt="Bode Filtro Pasa Bajos" width="500"><br> 
 
-Como se puede observar en el diagrama Bode, el filtro desfasa la señal, por lo cual se debe corregir ese desfase recortando la parte de la señal que se desplazó, entonces se usa la función ```grpdelay()``` para calcular el desfase que se le imprime a la señal, para posteriormente recortar la señal filtrada:
+Como se puede observar en el diagrama Bode, el filtro desfasa la señal. Por lo cual se debe corregir ese desfase recortando la parte de la señal que se desplazó, entonces se usa la función ```grpdelay()``` para calcular el desfase que se le imprime a la señal, para posteriormente recortar la señal filtrada:
 
 ```matlab
 delay = ceil(mean(grpdelay(filtro)));
