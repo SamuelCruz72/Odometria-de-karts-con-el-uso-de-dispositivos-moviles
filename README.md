@@ -186,7 +186,7 @@ Con lo cual las velocidades obtenidas son:
 <p align="center">
    <img src="Imágenes/Velocidad.png" alt="Velocidad" width="500"><br> 
 
-## Obtención de la trayectoria
+## Obtención de la trayectoría
 Para obtener la trayectoría del kart en coordenadas cartesianas se debe tener en cuenta que en cada punto el sistema de referencia rota con respecto al primer punto de medición, un ángulo determinado por el vector de posición angular, por lo cual se debe aplicar una matriz de corrección cuyas componentes se calculan con la primera componente del vector de posición angular, en este caso la del eje x dado que su velocidad es la de menor magnitud, por lo cual su mayor contribución al movimiento del kart es el cambio de dirección:
 
 $$Rot_k = \begin{pmatrix}
