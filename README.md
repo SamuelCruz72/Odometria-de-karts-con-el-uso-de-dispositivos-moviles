@@ -129,11 +129,11 @@ Una vez conocida la magnitud de la aceleración deseada, se determina el coseno 
 $$\vec{a_{d_r}} = \vec{a_d}sen(\gamma)cos(\theta_m)$$
 
 ```matlab
-accTot = sqrt(acc(:,1).^2+acc(:,2).^2+acc(:,3).^2);
-cosGrav = 9.81/accTot;
-MagaccsgG  = sqrt(abs(accTot.^2+9.81^2-2.*cosGrav.*accTot.*9.81));
-cosD = [acc(:,1)./accTot acc(:,2)./accTot acc(:,3)./accTot];
-accsG = MagaccsgG*cosD;
+accTot = sqrt(accf(:,1).^2+accf(:,2).^2+accf(:,3).^2);
+Gamma = acos(9.81./accTot);
+MagAccD  = sqrt(abs(accTot.^2-9.81^2));
+cosD = [accf(:,1)./accTot accf(:,2)./accTot accf(:,3)./accTot];
+accsG = MagAccD.*sin(Gamma).*cosD;
 ```
 
  Una vez se aplica la corrección por efectos de gravedad a la aceleración medida, se asume que la aceleración obtenida representa la aceleración tangencial del centro de masa del móvil en el Kart para facilitar los cálculos de la trayectoria, dado que suponemos que dicho vector al igual que la aceleración tangencial brinda únicamente los valores en la dirección en la que se mueve el kart:
